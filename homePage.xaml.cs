@@ -12,6 +12,7 @@ using Microsoft.UI.Xaml.Markup;
 using System.Windows;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media;
+using Microsoft.UI;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -238,10 +239,12 @@ namespace changeWindows
                         installDateElem.Text = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(installDate).ToString() + " //";
                         if (buildBranch == null)
                         {
+                            buildBranchElem.Foreground = new SolidColorBrush(Colors.Green);
                             buildBranchElem.Text = "GAC";
                         }
                         else
                         {
+                            buildBranchElem.Foreground = new SolidColorBrush(Colors.OrangeRed);
                             buildBranchElem.Text = buildBranch;
                         }
 
@@ -253,10 +256,12 @@ namespace changeWindows
                         installDateElem.Text = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(installDate).ToString() + " //";
                         if (buildBranch == null)
                         {
+                            buildBranchElem.Foreground = new SolidColorBrush(Colors.Green);
                             buildBranchElem.Text = "GAC";
                         }
                         else
                         {
+                            buildBranchElem.Foreground = new SolidColorBrush(Colors.OrangeRed);
                             buildBranchElem.Text = buildBranch;
                         }
 

@@ -10,7 +10,7 @@
     <PublishProfile>win10-$(Platform).pubxml</PublishProfile>
     <UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
-    <AssemblyVersion>1.2.11.99</AssemblyVersion>
+    <AssemblyVersion>1.2.11.101</AssemblyVersion>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="homePage.xaml" />
