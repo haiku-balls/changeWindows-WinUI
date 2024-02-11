@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "changeWindows (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "changeWindows (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
