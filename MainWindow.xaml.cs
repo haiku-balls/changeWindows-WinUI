@@ -31,16 +31,37 @@ namespace changeWindows
             return AppWindow.GetFromWindowId(wndId);
         }
 
+        private void CenterToScreen(IntPtr hWnd)
+        {
+            Microsoft.UI.WindowId windowId = Microsoft.UI.Win32Interop.GetWindowIdFromWindow(hWnd);
+            Microsoft.UI.Windowing.AppWindow appWindow = Microsoft.UI.Windowing.AppWindow.GetFromWindowId(windowId);
+            if (appWindow is not null)
+            {
+                Microsoft.UI.Windowing.DisplayArea displayArea = Microsoft.UI.Windowing.DisplayArea.GetFromWindowId(windowId, Microsoft.UI.Windowing.DisplayAreaFallback.Nearest);
+                if (displayArea is not null)
+                {
+                    var CenteredPosition = appWindow.Position;
+                    CenteredPosition.X = ((displayArea.WorkArea.Width - appWindow.Size.Width) / 2);
+                    CenteredPosition.Y = ((displayArea.WorkArea.Height - appWindow.Size.Height) / 2);
+                    appWindow.Move(CenteredPosition);
+                }
+            }
+        }
+
         public MainWindow()
         {
 
             this.InitializeComponent();
 
+            // Center the window
+            var hWnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
+            CenterToScreen(hWnd);
+
             // Inherited from winUISys.
             m_AppWindow = GetAppWindowForCurrentWindow();
             var titleBar = m_AppWindow.TitleBar;
             // Hide default title bar
-            Title = "Windows SysInfo";
+            Title = "Haiku's ChangeWindows - Preview";
 
             // Allows XAML to "clip" into.
             titleBar.ExtendsContentIntoTitleBar = true;

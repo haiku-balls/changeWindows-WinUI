@@ -8,11 +8,10 @@ using System.Runtime.Serialization;
 using System.Xml;
 using CommunityToolkit.WinUI.Controls;
 using Microsoft.UI.Xaml.Documents;
-using Microsoft.UI.Xaml.Markup;
-using System.Windows;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI;
+using System.Threading.Tasks;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -352,5 +351,9 @@ namespace changeWindows
 
         }
 
+        private void settingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(settingsPage));
+        }
     }
 }

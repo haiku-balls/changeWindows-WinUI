@@ -10,10 +10,11 @@
     <PublishProfile>win10-$(Platform).pubxml</PublishProfile>
     <UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
-    <AssemblyVersion>1.2.11.101</AssemblyVersion>
+    <AssemblyVersion>1.2.19.113</AssemblyVersion>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="homePage.xaml" />
+    <None Remove="settingsPage.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,7 +23,6 @@
     <Content Include="Assets\Square150x150Logo.scale-200.png" />
     <Content Include="Assets\Square44x44Logo.scale-200.png" />
     <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
-    <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
   </ItemGroup>
 
@@ -42,6 +42,11 @@
   -->
   <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <ProjectCapability Include="Msix" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="settingsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="homePage.xaml">

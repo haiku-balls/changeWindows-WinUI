@@ -16,7 +16,7 @@
 
   <Properties>
     <DisplayName>changeWindows</DisplayName>
-    <PublisherDisplayName>anon</PublisherDisplayName>
+    <PublisherDisplayName>haiku</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
@@ -35,11 +35,11 @@
       EntryPoint="$targetentrypoint$">
       <uap:VisualElements
         DisplayName="changeWindows"
-        Description="changeWindows"
+        Description="Displays the log of Windows Builds you&apos;ve installed!"
         BackgroundColor="transparent"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png">
-        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" />
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"  Square71x71Logo="Assets\SmallTile.png" Square310x310Logo="Assets\LargeTile.png"/>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
       </uap:VisualElements>
     </Application>
