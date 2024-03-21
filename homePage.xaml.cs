@@ -172,12 +172,6 @@ namespace changeWindows
                         XmlElement root = buildLog.DocumentElement;
 
                         root.PrependChild(systemBuild);
-                        /*
-                        systemBuild.SetAttributeNode("buildBranch", sysBuildBranch);
-                        systemBuild.SetAttributeNode("buildNum", sysBuild);
-                        systemBuild.SetAttributeNode("buildTag", sysBuildLab);
-                        systemBuild.SetAttributeNode("installDate", sysInstallDate.ToString());
-                        */
 
                         XmlElement sysBuildBranchX = buildLog.CreateElement("buildBranch");
                         sysBuildBranchX.InnerText = sysBuildBranch;
@@ -195,15 +189,9 @@ namespace changeWindows
                         sysInstallDateX.InnerText = sysInstallDate.ToString();
                         systemBuild.AppendChild(sysInstallDateX);
 
-                        // XmlNode parentNode = buildLog.SelectSingleNode("/fetchedBuild");
-
                         loadedBuild.Insert(0, new fetchedBuild(sysBuild, (int)sysInstallDate, sysBuildBranch, sysBuildLab));
 
                         SaveViaDataContractSerialization(loadedBuild, baseDirectory + "buildLog.xml"); // Save (pls no override)
-
-
-                        // loadedBuild = LoadViaDataContractSerialization<List<fetchedBuild>>(baseDirectory + "buildLog.xml");
-                        // currentWorkingBuilds.Insert(0, new fetchedBuild(sysBuild, (int)sysInstallDate, sysBuildBranch, sysBuildLab));
                     }
                     break;
                 }
@@ -241,6 +229,11 @@ namespace changeWindows
                             buildBranchElem.Foreground = new SolidColorBrush(Colors.Green);
                             buildBranchElem.Text = "GAC";
                         }
+                        else if (buildBranch == "CanaryChannel") // Override so it looks less weird.
+                        {
+                            buildBranchElem.Foreground = new SolidColorBrush(Colors.Yellow);
+                            buildBranchElem.Text = "Canary";
+                        }
                         else
                         {
                             buildBranchElem.Foreground = new SolidColorBrush(Colors.OrangeRed);
@@ -249,7 +242,11 @@ namespace changeWindows
 
                         buildTagElem.Text = "- " + buildTag;
 
-                    } else
+                    } 
+                    //
+                    // Current Build
+                    //
+                    else
                     {
                         currentBuild.Header = "Build " + buildNumber;
                         installDateElem.Text = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(installDate).ToString() + " //";
@@ -257,6 +254,11 @@ namespace changeWindows
                         {
                             buildBranchElem.Foreground = new SolidColorBrush(Colors.Green);
                             buildBranchElem.Text = "GAC";
+                        }
+                        else if (buildBranch == "CanaryChannel") // Override so it looks less weird.
+                        {
+                            buildBranchElem.Foreground = new SolidColorBrush(Colors.Yellow);
+                            buildBranchElem.Text = "Canary";
                         }
                         else
                         {
@@ -300,22 +302,6 @@ namespace changeWindows
                 // Gets the branch (and sets the color)
                 if (buildBranch != null)
                 {
-                    if (buildBranch == "CanaryChannel")
-                    {
-                        // buildBranch23620.Foreground = new ;
-                    }
-                    else if (buildBranch == "Dev")
-                    {
-
-                    }
-                    else if (buildBranch == "Beta")
-                    {
-
-                    }
-                    else if (buildBranch == "ReleasePreview")
-                    {
-
-                    }
                     buildBranchC.Text = buildBranch;
                 }
                 else // Most likely, it's a GAC build without a branch.
