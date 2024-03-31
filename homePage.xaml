@@ -12,135 +12,231 @@
 
     <Grid>
         <StackPanel>
-            <TextBlock
-                Style="{StaticResource TitleTextBlockStyle}"
-                Text="Installs"
-                Margin="5"
-                />
-            <TextBlock 
-                Style="{StaticResource BodyStrongTextBlockStyle}"
-                Text="Current"
-                Margin="5"
-                />
-            <controls:SettingsCard
-                x:Name="currentBuild"
-                Margin="3"
-                Header="Build --"
-                HeaderIcon="{ui:FontIcon Glyph=&#xE968;}"
-                IsClickEnabled="True">
-                <controls:SettingsCard.Description>
-                    <TextBlock>
-                        <Run 
-                            x:Name="buildInstallDate" 
-                            Text="--/--/24 //" />
-                        <Run 
-                            x:Name="buildBranchC" 
-                            FontWeight="Bold" 
-                            Foreground="OrangeRed"
-                            Text="Canary" />
-                        <Run 
-                            x:Name="buildTag"
-                            Text="- " />
-                    </TextBlock>
-                </controls:SettingsCard.Description>
-            </controls:SettingsCard>
-            <TextBlock 
-                Style="{StaticResource BodyStrongTextBlockStyle}"
-                Text="Past"
-                Margin="5"
-                />
-            <controls:SettingsCard
-                x:Name="pastBuild2"
-                Margin="3"
-                Header="Build --"
-                HeaderIcon="{ui:FontIcon Glyph=&#xE968;}"
-                IsClickEnabled="True"
-                Visibility="Collapsed">
-                <controls:SettingsCard.Description>
-                    <TextBlock>
-                        <Run 
-                            x:Name="pastBuild2Install" 
-                            Text="--/--/24 //" />
-                        <Run 
-                            x:Name="pastBuild2Branch" 
-                            FontWeight="Bold" 
-                            Foreground="OrangeRed"
-                            Text="Canary" />    
-                        <Run 
-                            x:Name="pastBuild2Tag"
-                            Text="- " />
-                    </TextBlock>
-                </controls:SettingsCard.Description>
-            </controls:SettingsCard>
-            <controls:SettingsCard
-                x:Name="pastBuild3"
-                Margin="3"
-                Header="Build --"
-                HeaderIcon="{ui:FontIcon Glyph=&#xE968;}"
-                IsClickEnabled="True"
-                Visibility="Collapsed">
-                <controls:SettingsCard.Description>
-                    <TextBlock>
-                        <Run 
-                            x:Name="pastBuild3Install" 
-                            Text="--/--/24 //" />
-                        <Run 
-                            x:Name="pastBuild3Branch" 
-                            FontWeight="Bold" 
-                            Foreground="OrangeRed"
-                            Text="Canary" />    
-                        <Run 
-                            x:Name="pastBuild3Tag"
-                            Text="- " />
-                    </TextBlock>
-                </controls:SettingsCard.Description>
-            </controls:SettingsCard>
-            <controls:SettingsCard
-                x:Name="pastBuild4"
-                Margin="3"
-                Header="Build --"
-                HeaderIcon="{ui:FontIcon Glyph=&#xE968;}"
-                IsClickEnabled="True"
-                Visibility="Collapsed">
-                <controls:SettingsCard.Description>
-                    <TextBlock>
-                        <Run 
-                            x:Name="pastBuild4Install" 
-                            Text="--/--/24 //" />
-                        <Run 
-                            x:Name="pastBuild4Branch" 
-                            FontWeight="Bold" 
-                            Foreground="OrangeRed"
-                            Text="Canary" />    
-                        <Run 
-                            x:Name="pastBuild4Tag"
-                            Text="- " />
-                    </TextBlock>
-                </controls:SettingsCard.Description>
-            </controls:SettingsCard>
-            <controls:SettingsCard
-                x:Name="pastBuild5"
-                Margin="3"
-                Header="Build --"
-                HeaderIcon="{ui:FontIcon Glyph=&#xE968;}"
-                IsClickEnabled="True"
-                Visibility="Collapsed">
-                <controls:SettingsCard.Description>
-                    <TextBlock>
-                        <Run 
-                            x:Name="pastBuild5Install" 
-                            Text="--/--/24 //" />
-                        <Run 
-                            x:Name="pastBuild5Branch" 
-                            FontWeight="Bold" 
-                            Foreground="OrangeRed"
-                            Text="Canary" />    
-                        <Run 
-                            x:Name="pastBuild5Tag"
-                            Text="- " />
-                    </TextBlock>
-                </controls:SettingsCard.Description>
-            </controls:SettingsCard>
+            <ScrollView>
+                <StackPanel>
+                    <TextBlock
+                        Style="{StaticResource TitleTextBlockStyle}"
+                        Text="Installs"
+                        Margin="5"
+                        />
+                    <TextBlock 
+                        Style="{StaticResource BodyStrongTextBlockStyle}"
+                        Text="Current"
+                        Margin="5"
+                        />
+                    <controls:SettingsCard
+                        x:Name="currentBuild"
+                        Margin="3"
+                        Header="Build --"
+                        HeaderIcon="{ui:FontIcon Glyph=&#xE968;}"
+                        IsClickEnabled="True">
+                        <controls:SettingsCard.Description>
+                            <TextBlock>
+                                <Run 
+                                    x:Name="buildInstallDate" 
+                                    Text="--/--/24 //" />
+                                <Run 
+                                    x:Name="buildBranchC" 
+                                    FontWeight="Bold" 
+                                    Foreground="OrangeRed"
+                                    Text="Canary" />
+                                <Run 
+                                    x:Name="buildTag"
+                                    Text="- " />
+                            </TextBlock>
+                        </controls:SettingsCard.Description>
+                    </controls:SettingsCard>
+                    <TextBlock 
+                        Style="{StaticResource BodyStrongTextBlockStyle}"
+                        Text="Past"
+                        Margin="5"
+                        />
+                    <controls:SettingsCard
+                        x:Name="pastBuild2"
+                        Margin="3"
+                        Header="Build --"
+                        HeaderIcon="{ui:FontIcon Glyph=&#xE968;}"
+                        IsClickEnabled="True"
+                        Visibility="Collapsed">
+                        <controls:SettingsCard.Description>
+                            <TextBlock>
+                                <Run 
+                                    x:Name="pastBuild2Install" 
+                                    Text="--/--/24 //" />
+                                <Run 
+                                    x:Name="pastBuild2Branch" 
+                                    FontWeight="Bold" 
+                                    Foreground="OrangeRed"
+                                    Text="Canary" />    
+                                <Run 
+                                    x:Name="pastBuild2Tag"
+                                    Text="- " />
+                            </TextBlock>
+                        </controls:SettingsCard.Description>
+                    </controls:SettingsCard>
+                    <controls:SettingsCard
+                        x:Name="pastBuild3"
+                        Margin="3"
+                        Header="Build --"
+                        HeaderIcon="{ui:FontIcon Glyph=&#xE968;}"
+                        IsClickEnabled="True"
+                        Visibility="Collapsed">
+                        <controls:SettingsCard.Description>
+                            <TextBlock>
+                                <Run 
+                                    x:Name="pastBuild3Install" 
+                                    Text="--/--/24 //" />
+                                <Run 
+                                    x:Name="pastBuild3Branch" 
+                                    FontWeight="Bold" 
+                                    Foreground="OrangeRed"
+                                    Text="Canary" />    
+                                <Run 
+                                    x:Name="pastBuild3Tag"
+                                    Text="- " />
+                            </TextBlock>
+                        </controls:SettingsCard.Description>
+                    </controls:SettingsCard>
+                    <controls:SettingsCard
+                        x:Name="pastBuild4"
+                        Margin="3"
+                        Header="Build --"
+                        HeaderIcon="{ui:FontIcon Glyph=&#xE968;}"
+                        IsClickEnabled="True"
+                        Visibility="Collapsed">
+                        <controls:SettingsCard.Description>
+                            <TextBlock>
+                                <Run 
+                                    x:Name="pastBuild4Install" 
+                                    Text="--/--/24 //" />
+                                <Run 
+                                    x:Name="pastBuild4Branch" 
+                                    FontWeight="Bold" 
+                                    Foreground="OrangeRed"
+                                    Text="Canary" />    
+                                <Run 
+                                    x:Name="pastBuild4Tag"
+                                    Text="- " />
+                            </TextBlock>
+                        </controls:SettingsCard.Description>
+                    </controls:SettingsCard>
+                    <controls:SettingsCard
+                        x:Name="pastBuild5"
+                        Margin="3"
+                        Header="Build --"
+                        HeaderIcon="{ui:FontIcon Glyph=&#xE968;}"
+                        IsClickEnabled="True"
+                        Visibility="Collapsed">
+                        <controls:SettingsCard.Description>
+                            <TextBlock>
+                                <Run 
+                                    x:Name="pastBuild5Install" 
+                                    Text="--/--/24 //" />
+                                <Run 
+                                    x:Name="pastBuild5Branch" 
+                                    FontWeight="Bold" 
+                                    Foreground="OrangeRed"
+                                    Text="Canary" />    
+                                <Run 
+                                    x:Name="pastBuild5Tag"
+                                    Text="- " />
+                            </TextBlock>
+                        </controls:SettingsCard.Description>
+                    </controls:SettingsCard>
+                    <controls:SettingsCard
+                        x:Name="pastBuild6"
+                        Margin="3"
+                        Header="Build --"
+                        HeaderIcon="{ui:FontIcon Glyph=&#xE968;}"
+                        IsClickEnabled="True"
+                        Visibility="Collapsed">
+                        <controls:SettingsCard.Description>
+                            <TextBlock>
+                                <Run 
+                                    x:Name="pastBuild6Install" 
+                                    Text="--/--/24 //" />
+                                <Run 
+                                    x:Name="pastBuild6Branch" 
+                                    FontWeight="Bold" 
+                                    Foreground="OrangeRed"
+                                    Text="Canary" />    
+                                <Run 
+                                    x:Name="pastBuild6Tag"
+                                    Text="- " />
+                            </TextBlock>
+                        </controls:SettingsCard.Description>
+                    </controls:SettingsCard>
+                    <controls:SettingsCard
+                        x:Name="pastBuild7"
+                        Margin="3"
+                        Header="Build --"
+                        HeaderIcon="{ui:FontIcon Glyph=&#xE968;}"
+                        IsClickEnabled="True"
+                        Visibility="Collapsed">
+                        <controls:SettingsCard.Description>
+                            <TextBlock>
+                                <Run 
+                                    x:Name="pastBuild7Install" 
+                                    Text="--/--/24 //" />
+                                <Run 
+                                    x:Name="pastBuild7Branch" 
+                                    FontWeight="Bold" 
+                                    Foreground="OrangeRed"
+                                    Text="Canary" />    
+                                <Run 
+                                    x:Name="pastBuild7Tag"
+                                    Text="- " />
+                            </TextBlock>
+                        </controls:SettingsCard.Description>
+                    </controls:SettingsCard>
+                    <controls:SettingsCard
+                        x:Name="pastBuild8"
+                        Margin="3"
+                        Header="Build --"
+                        HeaderIcon="{ui:FontIcon Glyph=&#xE968;}"
+                        IsClickEnabled="True"
+                        Visibility="Collapsed">
+                        <controls:SettingsCard.Description>
+                            <TextBlock>
+                                <Run 
+                                    x:Name="pastBuild8Install" 
+                                    Text="--/--/24 //" />
+                                <Run 
+                                    x:Name="pastBuild8Branch" 
+                                    FontWeight="Bold" 
+                                    Foreground="OrangeRed"
+                                    Text="Canary" />    
+                                <Run 
+                                    x:Name="pastBuild8Tag"
+                                    Text="- " />
+                            </TextBlock>
+                        </controls:SettingsCard.Description>
+                    </controls:SettingsCard>
+                    <controls:SettingsCard
+                        x:Name="pastBuild9"
+                        Margin="3"
+                        Header="Build --"
+                        HeaderIcon="{ui:FontIcon Glyph=&#xE968;}"
+                        IsClickEnabled="True"
+                        Visibility="Collapsed">
+                        <controls:SettingsCard.Description>
+                            <TextBlock>
+                                <Run 
+                                    x:Name="pastBuild9Install" 
+                                    Text="--/--/24 //" />
+                                <Run 
+                                    x:Name="pastBuild9Branch" 
+                                    FontWeight="Bold" 
+                                    Foreground="OrangeRed"
+                                    Text="Canary" />    
+                                <Run 
+                                    x:Name="pastBuild9Tag"
+                                    Text="- " />
+                            </TextBlock>
+                        </controls:SettingsCard.Description>
+                    </controls:SettingsCard>
+                </StackPanel>
+            </ScrollView>
             <Button x:Name="settingsButton" Margin="5" Click="settingsButton_Click" FontFamily="Segoe MDL2 Assets" Content="&#xE713;" />
             <TextBlock
                 x:Name="appVer"

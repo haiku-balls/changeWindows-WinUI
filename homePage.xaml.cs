@@ -12,6 +12,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI;
 using System.Threading.Tasks;
+using Microsoft.UI.Dispatching;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -22,6 +23,10 @@ namespace changeWindows
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
     /// 
+
+    ///
+    /// CLASSES
+    ///
 
     [DataContract]
     public class fetchedBuild // The system's fetched build.
@@ -76,17 +81,30 @@ namespace changeWindows
     public sealed partial class homePage : Page
     {
 
-        /* 
-         * TODO:
-         * - Check whether the file exists (sanity)
-	       - **NO**, load normally and capture the current build
-	       - **YES**, override the normal procedure and simply use current values.
-           - Compare the current build with the captured one.
-	       - **IF** build is higher, save it.
-	       - **IF** build is equal, do nothing.
-	       - Handle loading (?)
-	       - Clone build elements and fill details.
-         */
+        ///
+        /// VARIABLES
+        ///
+
+        // The app's root folder.
+        private string baseDirectory = AppDomain.CurrentDomain.BaseDirectory + @"\";
+
+        // These are the current working elements.
+        private Run installDateElem;
+        private Run buildBranchElem;
+        private Run buildTagElem;
+
+        
+
+        RegistryKey registryDev = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\WindowsSelfHost\Applicability");
+
+        RegistryKey registryKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion");
+
+        private int run = 0;
+
+        ///
+        /// FUNCTIONS
+        ///
+
         static void SaveViaDataContractSerialization<T>(T serializableObject, string filepath)
         {
             var serializer = new DataContractSerializer(typeof(T));
@@ -113,85 +131,144 @@ namespace changeWindows
             return serializableObject;
         }
 
-        public homePage()
+        private void setVer()
         {
-            // Local Folder
-
-            string baseDirectory = AppDomain.CurrentDomain.BaseDirectory + @"\";
-
-            this.InitializeComponent();
-
             // App Version
             var ver = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
             appVer.Text = ver;
+        }
+
+        // Determines what Insider channel (branch) the user is in and sets metadata.
+        private void determineBranch(string buildBranch, bool isFirstTime)
+        {
+            if (isFirstTime)
+            {
+                switch (buildBranch)
+                {
+                    case null: // Null means that the user is not in a branch. (GAC)
+                        buildBranchC.Foreground = new SolidColorBrush(Colors.Green);
+                        buildBranchC.Text = "GAC";
+                        break;
+                    case "CanaryChannel":
+                        buildBranchC.Foreground = new SolidColorBrush(Colors.Yellow);
+                        buildBranchC.Text = "Canary";
+                        break;
+                    case "Dev":
+                        buildBranchC.Foreground = new SolidColorBrush(Colors.Orange);
+                        buildBranchC.Text = "Dev";
+                        break;
+                    case "Beta":
+                        buildBranchC.Foreground = new SolidColorBrush(Colors.GreenYellow);
+                        buildBranchC.Text = "Beta";
+                        break;
+                    case "ReleasePreview":
+                        buildBranchC.Foreground = new SolidColorBrush(Colors.Green);
+                        buildBranchC.Text = "Release Preview";
+                        break;
+                };
+            }
+            else
+            {
+                switch (buildBranch)
+                {
+                    case null: // Null means that the user is not in a branch. (GAC)
+                        buildBranchElem.Foreground = new SolidColorBrush(Colors.Green);
+                        buildBranchElem.Text = "GAC";
+                        break;
+                    case "CanaryChannel":
+                        buildBranchElem.Foreground = new SolidColorBrush(Colors.Yellow);
+                        buildBranchElem.Text = "Canary";
+                        break;
+                    case "Dev":
+                        buildBranchElem.Foreground = new SolidColorBrush(Colors.Orange);
+                        buildBranchElem.Text = "Dev";
+                        break;
+                    case "Beta":
+                        buildBranchElem.Foreground = new SolidColorBrush(Colors.GreenYellow);
+                        buildBranchElem.Text = "Beta";
+                        break;
+                    case "ReleasePreview":
+                        buildBranchElem.Foreground = new SolidColorBrush(Colors.Green);
+                        buildBranchElem.Text = "Release Preview";
+                        break;
+                };
+            }
+        }
+
+        private void updateLog(List<fetchedBuild> loadedBuild)
+        {
+
+            var sysBuild = registryKey.GetValue("CurrentBuild").ToString();
+            var sysBuildLab = registryKey.GetValue("BuildLab").ToString();
+            var sysBuildBranch = registryDev.GetValue("BranchName").ToString();
+            var sysInstallDate = registryKey.GetValue("InstallDate");
+
+            List<fetchedBuild> currentWorkingBuilds = new List<fetchedBuild>
+            {
+                new fetchedBuild(sysBuild, (int)sysInstallDate, sysBuildBranch, sysBuildLab)
+            };
+
+            XmlDocument buildLog = new XmlDocument();
+            buildLog.Load(baseDirectory + "buildLog.xml");
+            XmlElement systemBuild = buildLog.CreateElement("fetchedBuild");
+
+            XmlElement root = buildLog.DocumentElement;
+
+            root.PrependChild(systemBuild);
+
+            XmlElement sysBuildBranchX = buildLog.CreateElement("buildBranch");
+            sysBuildBranchX.InnerText = sysBuildBranch;
+            systemBuild.AppendChild(sysBuildBranchX);
+
+            XmlElement sysBuildX = buildLog.CreateElement("buildNum");
+            sysBuildX.InnerText = sysBuild;
+            systemBuild.AppendChild(sysBuildX);
+
+            XmlElement sysBuildLabX = buildLog.CreateElement("buildTag");
+            sysBuildLabX.InnerText = sysBuildLab;
+            systemBuild.AppendChild(sysBuildLabX);
+
+            XmlElement sysInstallDateX = buildLog.CreateElement("installDate");
+            sysInstallDateX.InnerText = sysInstallDate.ToString();
+            systemBuild.AppendChild(sysInstallDateX);
+
+            loadedBuild.Insert(0, new fetchedBuild(sysBuild, (int)sysInstallDate, sysBuildBranch, sysBuildLab));
+
+            SaveViaDataContractSerialization(loadedBuild, baseDirectory + "buildLog.xml"); // Save (pls no override)
+        }
+
+
+        ///
+        /// MAIN FUNCTIONS
+        ///
+
+        public homePage()
+        {
+            this.InitializeComponent();
+
+            // Set the app's version.
+            setVer();
 
             // Check the log.
-            // Debug.WriteLine(File.Exists(baseDirectory + "buildLog.xml") ? "File exists." : "File doesn't exist.");
             if (File.Exists(baseDirectory + "buildLog.xml"))
             {
-                Debug.WriteLine("Log exists. Skipping normal loading.");
-                var loadedBuild = LoadViaDataContractSerialization<List<fetchedBuild>>(baseDirectory + "buildLog.xml");
-                var run = 0;
 
-                //
-                // UPDATE CHECK
-                //
+                var loadedBuild = LoadViaDataContractSerialization<List<fetchedBuild>>(baseDirectory + "buildLog.xml");
+
                 foreach (var a in loadedBuild)
                 {
                     var buildNumber = a.getBuildNum();
-                    var installDate = a.getInstallDate();
-                    var buildBranch = a.getBuildBranch();
-                    var buildTag = a.getBuildTag();
 
-                    RegistryKey registryKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion");
                     var systemBuildNumber = registryKey.GetValue("CurrentBuild").ToString();
                     var systemBuildNumberC = int.Parse(systemBuildNumber);
                     var buildNumberC = int.Parse(buildNumber);
 
-                    Debug.WriteLine("The system's build number is: " + systemBuildNumber + " and the fetched one was: " + buildNumber);
-
+                    //
+                    // UPDATE CHECK
+                    //
                     if (systemBuildNumberC > buildNumberC) // If the build number is higher (update)
                     {
-                        
-                        RegistryKey registryDev = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\WindowsSelfHost\Applicability");
-
-                        var sysBuild = registryKey.GetValue("CurrentBuild").ToString();
-                        var sysBuildLab = registryKey.GetValue("BuildLab").ToString();
-                        var sysBuildBranch = registryDev.GetValue("BranchName").ToString();
-                        var sysInstallDate = registryKey.GetValue("InstallDate");
-
-                        List<fetchedBuild> currentWorkingBuilds = new List<fetchedBuild>
-                        {
-                            new fetchedBuild(sysBuild, (int)sysInstallDate, sysBuildBranch, sysBuildLab)
-                        };
-
-                        XmlDocument buildLog = new XmlDocument();
-                        buildLog.Load(baseDirectory + "buildLog.xml");
-                        XmlElement systemBuild = buildLog.CreateElement("fetchedBuild");
-
-                        XmlElement root = buildLog.DocumentElement;
-
-                        root.PrependChild(systemBuild);
-
-                        XmlElement sysBuildBranchX = buildLog.CreateElement("buildBranch");
-                        sysBuildBranchX.InnerText = sysBuildBranch;
-                        systemBuild.AppendChild(sysBuildBranchX);
-
-                        XmlElement sysBuildX = buildLog.CreateElement("buildNum");
-                        sysBuildX.InnerText = sysBuild;
-                        systemBuild.AppendChild(sysBuildX);
-
-                        XmlElement sysBuildLabX = buildLog.CreateElement("buildTag");
-                        sysBuildLabX.InnerText = sysBuildLab;
-                        systemBuild.AppendChild(sysBuildLabX);
-
-                        XmlElement sysInstallDateX = buildLog.CreateElement("installDate");
-                        sysInstallDateX.InnerText = sysInstallDate.ToString();
-                        systemBuild.AppendChild(sysInstallDateX);
-
-                        loadedBuild.Insert(0, new fetchedBuild(sysBuild, (int)sysInstallDate, sysBuildBranch, sysBuildLab));
-
-                        SaveViaDataContractSerialization(loadedBuild, baseDirectory + "buildLog.xml"); // Save (pls no override)
+                        updateLog(loadedBuild);
                     }
                     break;
                 }
@@ -199,47 +276,37 @@ namespace changeWindows
                 foreach (var a in loadedBuild)
                 {
 
+                    //
                     // The first run.
+                    //
+
                     run += 1;
                     var buildNumber = a.getBuildNum();
                     var installDate = a.getInstallDate();
                     var buildBranch = a.getBuildBranch();
                     var buildTag = a.getBuildTag();
 
-                    Run installDateElem = this.FindName("buildInstallDate") as Run;
-                    Run buildBranchElem = this.FindName("buildBranchC") as Run;
-                    Run buildTagElem = this.FindName("buildTag") as Run;
+                    installDateElem = this.FindName("buildInstallDate") as Run;
+                    buildBranchElem = this.FindName("buildBranchC") as Run;
+                    buildTagElem = this.FindName("buildTag") as Run;
 
                     // The other runs, checks all the other builds. (If applicable)
-                    if (run >= 2 && run <= 4)
+                    if (run >= 2 && run <= 9)
                     {
                         SettingsCard pastWorkingBuild = this.FindName("pastBuild" + run) as SettingsCard;
 
-                        // Rename elements
-
+                        // This runs through the past builds.
                         installDateElem = this.FindName("pastBuild" + run + "Install") as Run;
                         buildBranchElem = this.FindName("pastBuild" + run + "Branch") as Run;
                         buildTagElem = this.FindName("pastBuild" + run + "Tag") as Run;
 
+                        // Set metadata
                         pastWorkingBuild.Header = "Build " + buildNumber;
                         pastWorkingBuild.Visibility = Visibility.Visible;
                         installDateElem.Text = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(installDate).ToString() + " //";
-                        if (buildBranch == null)
-                        {
-                            buildBranchElem.Foreground = new SolidColorBrush(Colors.Green);
-                            buildBranchElem.Text = "GAC";
-                        }
-                        else if (buildBranch == "CanaryChannel") // Override so it looks less weird.
-                        {
-                            buildBranchElem.Foreground = new SolidColorBrush(Colors.Yellow);
-                            buildBranchElem.Text = "Canary";
-                        }
-                        else
-                        {
-                            buildBranchElem.Foreground = new SolidColorBrush(Colors.OrangeRed);
-                            buildBranchElem.Text = buildBranch;
-                        }
 
+                        determineBranch(buildBranch, false);
+                    
                         buildTagElem.Text = "- " + buildTag;
 
                     } 
@@ -250,21 +317,8 @@ namespace changeWindows
                     {
                         currentBuild.Header = "Build " + buildNumber;
                         installDateElem.Text = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(installDate).ToString() + " //";
-                        if (buildBranch == null)
-                        {
-                            buildBranchElem.Foreground = new SolidColorBrush(Colors.Green);
-                            buildBranchElem.Text = "GAC";
-                        }
-                        else if (buildBranch == "CanaryChannel") // Override so it looks less weird.
-                        {
-                            buildBranchElem.Foreground = new SolidColorBrush(Colors.Yellow);
-                            buildBranchElem.Text = "Canary";
-                        }
-                        else
-                        {
-                            buildBranchElem.Foreground = new SolidColorBrush(Colors.OrangeRed);
-                            buildBranchElem.Text = buildBranch;
-                        }
+
+                        determineBranch(buildBranch, false);
 
                         buildTagElem.Text = "- " + buildTag;
                     }
@@ -273,7 +327,6 @@ namespace changeWindows
 
             } else
             {
-                Debug.WriteLine("Log doesn't exist. Loading...");
 
                 // Inherited from WinUISys.
                 RegistryKey registryKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion");
@@ -283,9 +336,6 @@ namespace changeWindows
                 var buildLab = registryKey.GetValue("BuildLab").ToString();
                 var buildBranch = registryDev.GetValue("BranchName").ToString();
                 var installDate = registryKey.GetValue("InstallDate");
-
-
-                // 
 
                 // This is what fills in information.
                 // build: #
@@ -299,25 +349,10 @@ namespace changeWindows
                 int uInstall = (int)installDate;
                 buildInstallDate.Text = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc).AddSeconds(uInstall).ToString() + " //";
 
-                // Gets the branch (and sets the color)
-                if (buildBranch != null)
-                {
-                    buildBranchC.Text = buildBranch;
-                }
-                else // Most likely, it's a GAC build without a branch.
-                {
-                    buildBranchC.Text = "GAC";
-                }
+                determineBranch(buildBranch, true);
 
                 // Gets the build tag.
                 buildTag.Text = "- " + buildLab;
-
-
-                //
-                // Serialize data. (TEST)
-                //
-
-                // Maybe the class will set?
 
                 List<fetchedBuild> currentWorkingBuilds = new List<fetchedBuild>
                 {
@@ -331,8 +366,6 @@ namespace changeWindows
                 currentWorkingBuilds = LoadViaDataContractSerialization<List<fetchedBuild>>(baseDirectory + "buildLog.xml");
                 foreach (var a in currentWorkingBuilds) // Go thru index.
                     Debug.WriteLine(a.ToString());
-
-                // Debug.WriteLine(baseDirectory);
             }
 
         }

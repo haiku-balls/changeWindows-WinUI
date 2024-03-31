@@ -61,7 +61,7 @@ namespace changeWindows
             m_AppWindow = GetAppWindowForCurrentWindow();
             var titleBar = m_AppWindow.TitleBar;
             // Hide default title bar
-            Title = "Haiku's ChangeWindows - Preview";
+            Title = "ChangeWindows - Preview";
 
             // Allows XAML to "clip" into.
             titleBar.ExtendsContentIntoTitleBar = true;
@@ -71,7 +71,6 @@ namespace changeWindows
             _presenter = m_AppWindow.Presenter as OverlappedPresenter;
             _presenter.IsResizable = false;
             _presenter.IsMaximizable = false;
-            _presenter.IsMinimizable = false;
 
             // Headless navigate
             contentFrame.Navigate(typeof(homePage));
