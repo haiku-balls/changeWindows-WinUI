@@ -11,12 +11,13 @@
     <Grid>
         <StackPanel>
             <Button 
-                x:Name="backButton" 
+                x:Name="backButton"
                 Margin="5" 
                 Click="backButton_Click" 
                 FontFamily="Segoe MDL2 Assets" 
                 Content="&#xE72B;" />
             <Button
+                x:Name="clearBuildLogButton"
                 Margin="5"
                 Content="[DEV] Clear Build Log"
                 Click="clearBuildLog_Click" />

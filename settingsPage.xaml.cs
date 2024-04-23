@@ -32,12 +32,29 @@ namespace changeWindows
         // Clear build log button.
         private async void clearBuildLog_Click(object sender, RoutedEventArgs e)
         {
-            clearBuildLogProgression.IsActive = true;
-            string baseDirectory = AppDomain.CurrentDomain.BaseDirectory + @"\";
-            File.Delete(baseDirectory + "buildLog.xml");
-            await Task.Delay(1000);
-            clearBuildLogProgression.IsActive = false;
-            Environment.Exit(0);
+            ContentDialog clearSure = new ContentDialog()
+            {
+                XamlRoot = this.XamlRoot,
+                Title = "Are you sure?",
+                Content = "This will WIPE your build log.",
+                PrimaryButtonText = "Yes",
+                SecondaryButtonText = "Cancel"
+                    
+            };
+            ContentDialogResult result = await clearSure.ShowAsync();
+            if (result == ContentDialogResult.Primary)
+            {
+                clearBuildLogProgression.IsActive = true;
+                string baseDirectory = AppDomain.CurrentDomain.BaseDirectory + @"\";
+                File.Delete(baseDirectory + "buildLog.xml");
+                await Task.Delay(1000);
+                clearBuildLogProgression.IsActive = false;
+                Environment.Exit(0);
+            } 
+            else
+            {
+                return;
+            }
         }
 
         private void backButton_Click(object sender, RoutedEventArgs e)

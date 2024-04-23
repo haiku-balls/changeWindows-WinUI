@@ -62,6 +62,8 @@ namespace changeWindows
             var titleBar = m_AppWindow.TitleBar;
             // Hide default title bar
             Title = "ChangeWindows - Preview";
+            // (This puts the icon in alt-tab)
+            m_AppWindow.SetIcon("haikuChangeWindows.ico");
 
             // Allows XAML to "clip" into.
             titleBar.ExtendsContentIntoTitleBar = true;
