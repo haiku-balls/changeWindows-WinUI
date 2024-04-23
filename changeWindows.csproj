@@ -11,9 +11,12 @@
     <PublishProfile>win10-$(Platform).pubxml</PublishProfile>
     <UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
-    <AssemblyVersion>1.4.23.160</AssemblyVersion>
+    <AssemblyVersion>1.4.23.164</AssemblyVersion>
     <ErrorReport>none</ErrorReport>
     <ApplicationIcon>haikuChangeWindows.ico</ApplicationIcon>
+    <PackageCertificateThumbprint>F207B71B656D5C3570561BC578DE14E6D9FB1043</PackageCertificateThumbprint>
+    <PackageCertificateKeyFile>changeWindows_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="homePage.xaml" />

@@ -9,8 +9,8 @@
 
   <Identity
     Name="a7871794-ef72-40c6-88ed-429232d63ec4"
-    Publisher="CN=anon"
-    Version="1.3.31.0" />
+    Publisher="CN=haiku"
+    Version="1.4.23.0" />
 
   <mp:PhoneIdentity PhoneProductId="a7871794-ef72-40c6-88ed-429232d63ec4" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
